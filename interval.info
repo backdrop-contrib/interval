@@ -1,0 +1,4 @@
+name = Interval Field
+description = A field and widget to allow entry of a date/time interval
+core = 7.x
+dependencies[] = field
