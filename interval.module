@@ -221,7 +221,6 @@ function interval_field_widget_form(&$form, &$form_state, $field, $instance, $la
       break;
 
   }
-  dsm($element);
   return $element;
 }
 
