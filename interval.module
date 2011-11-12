@@ -153,6 +153,7 @@ function interval_field_widget_form(&$form, &$form_state, $field, $instance, $la
   
   // Convenience variables
   $value = isset($items[$delta]) ? $items[$delta] : array('interval' => NULL, 'period' => NULL);
+  $field_name = $instance['field_name'];
   
   // We need to check our form_state values for ajax completion
   if (isset($form_state['values']) &&
