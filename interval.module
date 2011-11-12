@@ -87,15 +87,11 @@ function interval_field_formatter_view($entity_type, $entity, $field, $instance,
     // This formatter simply outputs the field as text and with a color.
     case 'interval_default':
       foreach ($items as $delta => $item) {
-        $intervals = interval_get_intervals();
-        $interval = $intervals[$item['period']];
         $element[$delta] = array(
           '#type' => 'html_tag',
           '#attributes' => array('class' => array('interval-value')),
           '#tag' => 'div',
-          '#value' => format_plural($item['interval'], '1 @singular',
-                                    '@count @plural', array('@singular' => $interval['singular'],
-                                                            '@plural' => $interval['plural']))
+          '#value' => interval_format_interval($item)
         );
       }
       break;
@@ -309,6 +305,50 @@ function interval_get_intervals() {
   }
   return $intervals;
 }
+
 /**
- * @} End of "defgroup interval".
- */
+ * Applies an interval to a date
+ *
+ * Applies the interval values to a given date
+ *
+ * @param $date object
+ *   A DateTime object to which the interval needs to be applied
+ * @param $item array
+ *   An array of values for the interval item consisting of:
+ *   - interval: the interval (int)
+ *   - period: the interval period
+ *
+ * @return bool
+ * 
+ * @see interval_get_intervals
+*/
+function interval_apply_interval($date, $item) {
+  $intervals = interval_get_intervals();
+  $interval = $intervals[$item['period']];
+  if (is_object($date)) {
+    $interval = $item['interval'] * $interval['multiplier'];
+    $date->modify("$interval {$interval['php']}");
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Formats an interval
+ *
+ * Takes the given interval values and formats them as a string
+ *
+ * @param $item array
+ * An array of values for the interval item consisting of:
+ *   - interval: the interval (int)
+ *   - period: the interval period
+ *
+ * @return string
+*/
+function interval_format_interval($item) {
+  $intervals = interval_get_intervals();
+  $interval = $intervals[$item['period']];
+  return format_plural($item['interval'], '1 @singular', '@count @plural',
+                array('@singular' => $interval['singular'],
+                      '@plural' => $interval['plural']));
+}
