@@ -327,8 +327,8 @@ function interval_apply_interval($date, $item) {
   $intervals = interval_get_intervals();
   $interval = $intervals[$item['period']];
   if (is_object($date)) {
-    $interval = $item['interval'] * $interval['multiplier'];
-    $date->modify("$interval {$interval['php']}");
+    $value = $item['interval'] * $interval['multiplier'];
+    $date->modify("$value {$interval['php']}");
     return TRUE;
   }
   return FALSE;
