@@ -1,19 +1,19 @@
 <?php
-/*
- * @file interval.rules.inc
+/**
+ * @file
  * Provides rules integration for interval module
  * @copyright Copyright(c) 2011 Lee Rowlands
  * @license GPL v2 http://www.fsf.org/licensing/licenses/gpl.html
  * @author Lee Rowlands contact at rowlandsgroup dot com
- * 
+ *
  */
 
 /**
  * Implements hook_rules_action_info().
-*/
+ */
 function interval_rules_action_info() {
   $actions = array();
-  
+
   $actions['interval_rules_apply_interval'] = array(
     'label' => t('Apply an interval to a datestamp'),
     'parameter' => array(
@@ -39,14 +39,14 @@ function interval_rules_action_info() {
     ),
     'group' => t('Data'),
   );
-  
+
   return $actions;
 }
 
 /**
  * Rules action callback.
  * Apply an interval to a date
-*/
+ */
 function interval_rules_apply_interval($interval, $period, $datestamp) {
   $date = new DateObject($datestamp, date_default_timezone(), 'U');
   $item = array(

@@ -1,12 +1,11 @@
 <?php
-
-/*
- * @file interval.api.php
+/**
+ * @file
  * Documents hooks defined by the module
  * @copyright Copyright(c) 2011 Rowlands Group
  * @license GPL v3 http://www.fsf.org/licensing/licenses/gpl.html
  * @author Lee Rowlands leerowlands at rowlandsgroup dot com
- * 
+ *
  */
 
 /**
@@ -15,7 +14,7 @@
  * The interval module provides various built in intervals such as month, year,
  * week etc but these can be extended by other modules
  *
- * @return
+ * @return array
  *   Implementations of this hook should return an array of intervals keyed by
  *   the machine name for the interval. Note the key name should not exceed
  *   20 characters (unless you implement hook_field_schema_alter)

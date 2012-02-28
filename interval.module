@@ -1,11 +1,11 @@
 <?php
-/*
- * @file interval.module
+/**
+ * @file
  * Defines an interval field
  * @copyright Copyright(c) 2011 Rowlands Group
  * @license GPL v3 http://www.fsf.org/licensing/licenses/gpl.html
  * @author Lee Rowlands leerowlands at rowlandsgroup dot com
- * 
+ *
  */
 
 
@@ -38,7 +38,7 @@ function interval_field_info() {
 function interval_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
   foreach ($items as $delta => $item) {
     if (!empty($item['interval'])) {
-      if (! is_numeric($item['interval'])) {
+      if (!is_numeric($item['interval'])) {
         $errors[$field['field_name']][$langcode][$delta][] = array(
           'error' => 'interval_non_numeric',
           'message' => t('You must enter a numeric value.'),
@@ -67,7 +67,7 @@ function interval_field_is_empty($item, $field) {
  */
 function interval_field_formatter_info() {
   return array(
-    // This formatter just displays the interval and period
+    // This formatter just displays the interval and period.
     'interval_default' => array(
       'label' => t('Plain'),
       'field types' => array('interval'),
@@ -95,7 +95,6 @@ function interval_field_formatter_view($entity_type, $entity, $field, $instance,
         );
       }
       break;
-    
   }
 
   return $element;
@@ -125,7 +124,6 @@ function interval_field_instance_settings_form($field, $instance) {
       '#default_value' => isset($settings['allowed_periods']) ? $settings['allowed_periods'] : array()
     );
   }
-  
   return $form;
 }
 
@@ -148,25 +146,25 @@ function interval_field_widget_info() {
  *
  */
 function interval_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  // Fetch list of intervals
+  // Fetch list of intervals.
   $intervals = interval_get_intervals();
-  
-  // Convenience variables
+
+  // Convenience variables.
   $value = isset($items[$delta]) ? $items[$delta] : array('interval' => NULL, 'period' => NULL);
   $field_name = $instance['field_name'];
-  
-  // We need to check our form_state values for ajax completion
+
+  // We need to check our form_state values for ajax completion.
   if (isset($form_state['values']) &&
       !empty($form_state['values'][$field_name][$langcode][$delta])) {
-    // We use the current form state values instead of those from the db
-    $value = $form_state['values'][$field_name][$langcode][$delta]; 
+    // We use the current form state values instead of those from the db.
+    $value = $form_state['values'][$field_name][$langcode][$delta];
   }
-  
+
   $settings = $instance['settings'];
   $required = $element['#required'];
   $widget = $instance['widget'];
 
-  // Available periods
+  // Available periods.
   $periods = array();
   if (isset($settings['allowed_periods'])) {
     $periods = array_keys(array_filter($settings['allowed_periods']));
@@ -199,7 +197,7 @@ function interval_field_widget_form(&$form, &$form_state, $field, $instance, $la
           )
         ),
         '#attached' => array(
-          'css' => array(drupal_get_path('module', 'interval') .'/interval.css')
+          'css' => array(drupal_get_path('module', 'interval') . '/interval.css')
         )
       );
       $element['interval'] = array(
@@ -241,7 +239,7 @@ function interval_field_widget_error($element, $error, $form, &$form_state) {
 
 /**
  * Implements hook_interval_intervals
-*/
+ */
 function interval_interval_intervals() {
   return array(
     'month' => array(
@@ -288,19 +286,19 @@ function interval_interval_intervals() {
  ***************************************************************/
 /**
  * Util function to fetch defined intervals
-*/
+ */
 function interval_get_intervals() {
   $intervals = &drupal_static(__FUNCTION__);
   if (!isset($intervals)) {
-    // First prime of the static - try cache
+    // First prime of the static - try cache.
     $cached = cache_get('interval_intervals');
     if ($cached && $cached->data) {
       $intervals = $cached->data;
     }
     else {
-      // Non-primed cache too - initialize with module_invoke_all
+      // Non-primed cache too - initialize with module_invoke_all.
       $intervals = module_invoke_all('interval_intervals');
-      // Cache them
+      // Cache them.
       cache_set('interval_intervals', $intervals);
     }
   }
@@ -308,21 +306,20 @@ function interval_get_intervals() {
 }
 
 /**
- * Applies an interval to a date
- *
  * Applies the interval values to a given date
  *
- * @param $date object
+ * @param object $date
  *   A DateTime object to which the interval needs to be applied
- * @param $item array
+ * @param array $item
  *   An array of values for the interval item consisting of:
  *   - interval: the interval (int)
  *   - period: the interval period
  *
  * @return bool
- * 
+ *   TRUE/FALSE
+ *
  * @see interval_get_intervals
-*/
+ */
 function interval_apply_interval($date, $item) {
   $intervals = interval_get_intervals();
   $interval = $intervals[$item['period']];
@@ -339,17 +336,22 @@ function interval_apply_interval($date, $item) {
  *
  * Takes the given interval values and formats them as a string
  *
- * @param $item array
- * An array of values for the interval item consisting of:
+ * @param array $item
+ *   An array of values for the interval item consisting of:
  *   - interval: the interval (int)
  *   - period: the interval period
  *
  * @return string
-*/
+ *   The formatted interval
+ */
 function interval_format_interval($item) {
   $intervals = interval_get_intervals();
   $interval = $intervals[$item['period']];
-  return format_plural($item['interval'], '1 @singular', '@count @plural',
-                array('@singular' => $interval['singular'],
-                      '@plural' => $interval['plural']));
+  return format_plural(
+    $item['interval'], '1 @singular', '@count @plural',
+    array(
+      '@singular' => $interval['singular'],
+      '@plural' => $interval['plural']
+    )
+  );
 }
