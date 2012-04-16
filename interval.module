@@ -26,8 +26,44 @@ function interval_field_info() {
       'description' => t('Provides an interval field allowing you to enter a number and select a period.'),
       'default_widget' => 'interval_default',
       'default_formatter' => 'interval_default',
+      // Add entity property metadata for the entity api module.
+      'property_type' => 'field_item_interval',
+      'property_callbacks' => array('interval_field_entity_property_info_alter'),
     ),
   );
+}
+
+/**
+ * Defines the data structure used for interval field items.
+ */
+function interval_entity_property_field_item_inerval_info() {
+  return array(
+    'interval' => array(
+      'type' => 'integer',
+      'label' => t('Interval number'),
+      'description' => t('The number of multiples of the period.'),
+    ),
+    'period' => array(
+      'type' => 'token',
+      'label' => t('Interval period'),
+      'options list' => 'interval_period_options_list',
+    ),
+  );
+}
+
+/**
+ * Callback to alter the property info of interval fields.
+ *
+ * @see interval_field_info()
+ */
+function interval_field_entity_property_info_alter(&$info, $entity_type, $field, $instance, $field_type) {
+  $name = $field['field_name'];
+  $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
+
+  $property['getter callback'] = 'entity_metadata_field_verbatim_get';
+  $property['setter callback'] = 'entity_metadata_field_verbatim_set';
+  $property['property info'] = interval_entity_property_field_item_inerval_info();
+  unset($property['query callback']);
 }
 
 /**
@@ -354,4 +390,15 @@ function interval_format_interval($item) {
       '@plural' => $interval['plural']
     )
   );
+}
+
+/**
+ * Returns an options list of all supported interval periods.
+ */
+function interval_period_options_list() {
+  $options = array();
+  foreach (interval_get_intervals() as $interval => $info) {
+    $options[$interval] = $info['plural'];
+  }
+  return $options;
 }

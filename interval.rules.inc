@@ -12,47 +12,46 @@
  * Implements hook_rules_action_info().
  */
 function interval_rules_action_info() {
-  $actions = array();
 
-  $actions['interval_rules_apply_interval'] = array(
-    'label' => t('Apply an interval to a datestamp'),
+  $actions['interval_apply'] = array(
+    'label' => t('Apply an interval to a date'),
     'parameter' => array(
       'interval' => array(
-        'type' => 'int',
-        'label' => t('Interval')
+        'type' => 'integer',
+        'label' => t('Interval number'),
+        'description' => t('The number of multiples of the interval period.'),
       ),
       'period' => array(
-        'type' => 'string',
-        'label' => t('Interval Period')
+        'type' => 'token',
+        'label' => t('Interval period'),
+        'options list' => 'interval_period_options_list',
       ),
-      'datestamp' => array(
-        'type' => 'int',
-        'label' => t('Datestamp'),
+      'date' => array(
+        'type' => 'date',
+        'label' => t('Date'),
       ),
     ),
     'provides' => array(
-      'datestamp' => array(
-        'type' => 'int',
-        'label' => t('New Datestamp'),
-        'description' => t('The new datestamp.'),
+      'date' => array(
+        'type' => 'date',
+        'label' => t('New date'),
       ),
     ),
     'group' => t('Data'),
+    'base' => 'interval_rules_apply_interval',
   );
-
   return $actions;
 }
 
 /**
- * Rules action callback.
- * Apply an interval to a date
+ * Rules action callback: Apply an interval to a date.
  */
 function interval_rules_apply_interval($interval, $period, $datestamp) {
-  $date = new DateObject($datestamp, date_default_timezone(), 'U');
+  $date = new DateObject("@$datestamp");
   $item = array(
     'interval' => $interval,
     'period' => $period
   );
   interval_apply_interval($date, $item);
-  return array('datestamp' => $date->format('U'));
+  return array('date' => $date->format('U'));
 }
