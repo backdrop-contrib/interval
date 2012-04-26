@@ -103,9 +103,14 @@ function interval_field_is_empty($item, $field) {
  */
 function interval_field_formatter_info() {
   return array(
-    // This formatter just displays the interval and period.
+    // This formatter just displays the interval and period wrapped in a div.
     'interval_default' => array(
       'label' => t('Plain'),
+      'field types' => array('interval'),
+    ),
+    // Same as default formatter but without the wrapper div.
+    'interval_raw' => array(
+      'label' => t('Raw'),
       'field types' => array('interval'),
     )
   );
@@ -120,7 +125,7 @@ function interval_field_formatter_view($entity_type, $entity, $field, $instance,
   $element = array();
 
   switch ($display['type']) {
-    // This formatter simply outputs the field as text and with a color.
+    // This formatter simply outputs the interval/period wrapped in a div.
     case 'interval_default':
       foreach ($items as $delta => $item) {
         $element[$delta] = array(
@@ -131,6 +136,16 @@ function interval_field_formatter_view($entity_type, $entity, $field, $instance,
         );
       }
       break;
+
+    // This formatter outputs the interval/period.
+    case 'interval_raw':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+          '#markup' => check_plain(interval_format_interval($item))
+        );
+      }
+      break;
+
   }
 
   return $element;
