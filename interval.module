@@ -112,7 +112,12 @@ function interval_field_formatter_info() {
     'interval_raw' => array(
       'label' => t('Raw'),
       'field types' => array('interval'),
-    )
+    ),
+    'interval_php' => array(
+      'label' => t('PHP date/time'),
+      'field types' => array('interval'),
+      'description' => t('A valid PHP date/time string.'),
+    ),
   );
 }
 
@@ -146,6 +151,14 @@ function interval_field_formatter_view($entity_type, $entity, $field, $instance,
       }
       break;
 
+    // This formatter outputs the interval/period as a PHP date/time string.
+    case 'interval_php':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+          '#markup' => check_plain(interval_php_interval($item)),
+        );
+      }
+      break;
   }
 
   return $element;
@@ -368,18 +381,36 @@ function interval_get_intervals() {
  *
  * @return bool
  *   TRUE/FALSE
- *
- * @see interval_get_intervals
  */
 function interval_apply_interval($date, $item) {
-  $intervals = interval_get_intervals();
-  $interval = $intervals[$item['period']];
   if (is_object($date)) {
-    $value = $item['interval'] * $interval['multiplier'];
-    $date->modify("$value {$interval['php']}");
+    $datetime = interval_php_interval($item);
+    $date->modify($datetime);
     return TRUE;
   }
   return FALSE;
+}
+
+/**
+ * Returns a PHP date/time string for a given interval.
+ *
+ * @param array $item
+ *   An array of values for the interval item consisting of:
+ *   - interval: the interval (int)
+ *   - period: the interval period
+ *
+ * @return string
+ *   The PHP date/time string.
+ *
+ * @see interval_get_intervals
+ */
+function interval_php_interval($item) {
+  $intervals = interval_get_intervals();
+  $interval = $intervals[$item['period']];
+  $value = $item['interval'] * $interval['multiplier'];
+  $datetime = $value . ' ' . $interval['php'];
+
+  return $datetime;
 }
 
 /**
