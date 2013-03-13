@@ -378,14 +378,30 @@ function interval_get_intervals() {
  *   An array of values for the interval item consisting of:
  *   - interval: the interval (int)
  *   - period: the interval period
+ * @param bool $limit
+ *   When calling the interval apply function with months or a month multiplier,
+ *   keep the date in the last day of the month if this was exceeded.
+ *   Example, with $limit set to TRUE, January 31st +1 month will result in
+ *   February 28th.
  *
  * @return bool
  *   TRUE/FALSE
  */
-function interval_apply_interval($date, $item) {
+function interval_apply_interval($date, $item, $limit = FALSE) {
   if (is_object($date)) {
+    $old_date = clone $date;
+    $intervals = interval_get_intervals();
+    $interval = $intervals[$item['period']];
     $datetime = interval_php_interval($item);
     $date->modify($datetime);
+
+    if ($limit && $interval['php'] == 'months') {
+      $dateinterval = $date->diff($old_date);
+      if ($dateinterval->d <> 0) {
+        $date->modify("last day of last month");
+      }
+    }
+
     return TRUE;
   }
   return FALSE;
@@ -398,15 +414,19 @@ function interval_apply_interval($date, $item) {
  *   An array of values for the interval item consisting of:
  *   - interval: the interval (int)
  *   - period: the interval period
+ * @param array $interval
+ *   An array of interval properties.
  *
  * @return string
  *   The PHP date/time string.
  *
  * @see interval_get_intervals
  */
-function interval_php_interval($item) {
-  $intervals = interval_get_intervals();
-  $interval = $intervals[$item['period']];
+function interval_php_interval($item, $interval = NULL) {
+  if (!isset($interval)) {
+    $intervals = interval_get_intervals();
+    $interval = $intervals[$item['period']];
+  }
   $value = $item['interval'] * $interval['multiplier'];
   $datetime = $value . ' ' . $interval['php'];
 
