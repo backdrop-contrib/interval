@@ -210,9 +210,6 @@ function interval_field_widget_info() {
  *
  */
 function interval_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  // Fetch list of intervals.
-  $intervals = interval_get_intervals();
-
   // Convenience variables.
   $value = isset($items[$delta]) ? $items[$delta] : array('interval' => NULL, 'period' => NULL);
   $field_name = $instance['field_name'];
@@ -223,63 +220,24 @@ function interval_field_widget_form(&$form, &$form_state, $field, $instance, $la
     // We use the current form state values instead of those from the db.
     $value = $form_state['values'][$field_name][$langcode][$delta];
   }
+  $element['#default_value'] = $value;
 
   $settings = $instance['settings'];
-  $required = $element['#required'];
   $widget = $instance['widget'];
 
   // Available periods.
-  $periods = array();
   if (isset($settings['allowed_periods'])) {
-    $periods = array_keys(array_filter($settings['allowed_periods']));
-  }
-  $period_options = array();
-  foreach ($intervals as $key => $detail) {
-    if (in_array($key, $periods) && isset($detail['plural'])) {
-      $period_options[$key] = $detail['plural'];
-    }
+    $element['#periods'] = array_keys(array_filter($settings['allowed_periods']));
   }
 
   switch ($widget['type']) {
-
     case 'interval_default':
-      if ($field['cardinality'] == 1) {
-        $element += array(
-          '#type' => 'fieldset',
-          '#collapsible' => FALSE
-        );
-      }
-      else {
-        $element += array(
-          '#type' => 'container'
-        );
-      }
       $element += array(
-        '#attributes' => array(
-          'class' => array(
-            'clearfix'
-          )
-        ),
-        '#attached' => array(
-          'css' => array(drupal_get_path('module', 'interval') . '/interval.css')
-        )
-      );
-      $element['interval'] = array(
-        '#type' => 'textfield',
-        '#size' => 8,
-        '#required' => $required,
-        '#attributes' => array('class' => array('interval-interval')),
-        '#default_value' => $value['interval']
-      );
-      $element['period'] = array(
-        '#type' => 'select',
-        '#options' => $period_options,
-        '#attributes' => array('class' => array('interval-period')),
-        '#default_value' => $value['period']
+        '#type' => 'interval',
       );
       break;
-
   }
+
   return $element;
 }
 
@@ -295,6 +253,56 @@ function interval_field_widget_error($element, $error, $form, &$form_state) {
       form_error($element['interval'], $error['message']);
       break;
   }
+}
+
+/***************************************************************
+ * Form element hooks
+ ***************************************************************/
+
+/**
+ * Implements hook_element_info().
+ */
+function interval_element_info() {
+  $types = array();
+  $types['interval'] = array(
+    '#input' => TRUE,
+    '#process' => array('interval_element_process'),
+    '#theme_wrappers' => array('form_element'),
+  );
+  return $types;
+}
+
+/**
+ * Process function to expand the interval element type.
+ */
+function interval_element_process($element, &$form_state, $form) {
+  $value = !empty($element['#default_value'])?$element['#default_value']:array('interval' => NULL, 'period' => NULL);
+
+  $element['interval'] = array(
+    '#type' => 'textfield',
+    '#size' => 8,
+    '#default_value' => $value['interval'],
+    '#required' => $element['#required'],
+    '#prefix' => '<div class="container-inline">',
+  );
+
+  $intervals = interval_get_intervals();
+  $periods = !empty($element['periods'])?$element['periods']:array_keys($intervals);
+  $period_options = array();
+  foreach ($intervals as $key => $detail) {
+    if (in_array($key, $periods) && isset($detail['plural'])) {
+      $period_options[$key] = $detail['plural'];
+    }
+  }
+  $element['period'] = array(
+    '#type' => 'select',
+    '#options' => $period_options,
+    '#default_value' => $value['period'],
+    '#required' => $element['#required'],
+    '#suffix' => '</div>',
+  );
+
+  return $element;
 }
 
 /***************************************************************
