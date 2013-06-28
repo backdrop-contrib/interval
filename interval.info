@@ -1,5 +1,6 @@
 name = Interval Field
 description = A field and widget to allow entry of a date/time interval
+package = Date/Time
 core = 7.x
 dependencies[] = field
 dependencies[] = date_api
