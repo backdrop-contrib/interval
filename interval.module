@@ -84,7 +84,6 @@ function interval_field_validate($entity_type, $entity, $field, $instance, $lang
   }
 }
 
-
 /**
  * Implements hook_field_is_empty().
  */
@@ -207,7 +206,6 @@ function interval_field_widget_info() {
 
 /**
  * Implements hook_field_widget_form().
- *
  */
 function interval_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   // Convenience variables.
@@ -267,9 +265,46 @@ function interval_element_info() {
   $types['interval'] = array(
     '#input' => TRUE,
     '#process' => array('interval_element_process'),
+    '#theme' => 'interval',
     '#theme_wrappers' => array('form_element'),
   );
+
   return $types;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function interval_theme() {
+  $hooks = array(
+    'interval' => array(
+      'render element' => 'element',
+    ),
+  );
+
+  return $hooks;
+}
+
+/**
+ * Returns HTML for an interval form element.
+ */
+function theme_interval($variables) {
+  $element = $variables['element'];
+
+  if (!isset($element['interval']['#size'])) {
+    $element['interval']['#size'] = 8;
+  }
+
+  $attributes = array();
+  if (isset($element['#id'])) {
+    $attributes['id'] = $element['#id'];
+  }
+  if (!empty($element['#attributes']['class'])) {
+    $attributes['class'] = (array) $element['#attributes']['class'];
+  }
+  $attributes['class'][] = 'container-inline';
+
+  return '<div' . drupal_attributes($attributes) . '>' . drupal_render_children($element) . '</div>';
 }
 
 /**
@@ -280,10 +315,8 @@ function interval_element_process($element, &$form_state, $form) {
 
   $element['interval'] = array(
     '#type' => 'textfield',
-    '#size' => 8,
     '#default_value' => $value['interval'],
     '#required' => $element['#required'],
-    '#prefix' => '<div class="container-inline">',
   );
 
   $intervals = interval_get_intervals();
@@ -299,7 +332,6 @@ function interval_element_process($element, &$form_state, $form) {
     '#options' => $period_options,
     '#default_value' => $value['period'],
     '#required' => $element['#required'],
-    '#suffix' => '</div>',
   );
 
   return $element;
