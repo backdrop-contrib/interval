@@ -290,10 +290,7 @@ function interval_theme() {
  */
 function theme_interval($variables) {
   $element = $variables['element'];
-
-  if (!isset($element['interval']['#size'])) {
-    $element['interval']['#size'] = 8;
-  }
+  $element['interval']['#size'] = 8;
 
   $attributes = array();
   if (isset($element['#id'])) {
