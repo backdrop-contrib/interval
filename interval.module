@@ -88,7 +88,7 @@ function interval_field_validate($entity_type, $entity, $field, $instance, $lang
  * Implements hook_field_is_empty().
  */
 function interval_field_is_empty($item, $field) {
-  return empty($item['interval']);
+  return ($item['interval'] == '');
 }
 
 /**
