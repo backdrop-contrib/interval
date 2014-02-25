@@ -32,38 +32,38 @@
 function hook_interval_intervals() {
   return array(
     'month' => array(
-      'plural' => t('Months'),
-      'singular' => t('Month'),
+      'plural' => t('Months', array(), array('context' => 'interval')),
+      'singular' => t('Month', array(), array('context' => 'interval')),
       'php' => 'months',
       'multiplier' => 1
     ),
     'day' => array(
-      'plural' => t('Days'),
-      'singular' => t('Day'),
+      'plural' => t('Days', array(), array('context' => 'interval')),
+      'singular' => t('Day', array(), array('context' => 'interval')),
       'php' => 'days',
       'multiplier' => 1
     ),
     'year' => array(
-      'plural' => t('Years'),
-      'singular' => t('Year'),
+      'plural' => t('Years', array(), array('context' => 'interval')),
+      'singular' => t('Year', array(), array('context' => 'interval')),
       'php' => 'years',
       'multiplier' => 1
     ),
     'week' => array(
-      'plural' => t('Weeks'),
-      'singular' => t('Week'),
+      'plural' => t('Weeks', array(), array('context' => 'interval')),
+      'singular' => t('Week', array(), array('context' => 'interval')),
       'php' => 'days',
       'multiplier' => 7
     ),
     'fortnight' => array(
-      'plural' => t('Fortnights'),
-      'singular' => t('Fortnight'),
+      'plural' => t('Fortnights', array(), array('context' => 'interval')),
+      'singular' => t('Fortnight', array(), array('context' => 'interval')),
       'php' => 'days',
       'multiplier' => 14
     ),
     'quarter' => array(
-      'plural' => t('Quarters'),
-      'singular' => t('Quarter'),
+      'plural' => t('Quarters', array(), array('context' => 'interval')),
+      'singular' => t('Quarter', array(), array('context' => 'interval')),
       'php' => 'months',
       'multiplier' => 3
     )
