@@ -4,3 +4,4 @@ package = Date/Time
 core = 7.x
 dependencies[] = field
 dependencies[] = date_api
+files[] = interval.test
