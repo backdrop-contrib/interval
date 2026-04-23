@@ -1,0 +1,5 @@
+[IntervalUnitTestCase]
+name = Interval unit test
+description = Test interval works properly.
+group = Interval
+file = interval.test
