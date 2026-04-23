@@ -8,7 +8,6 @@
  *
  */
 
-
 /***************************************************************
  * Field Type API hooks
  ***************************************************************/
@@ -143,7 +142,7 @@ function interval_field_formatter_view($entity_type, $entity, $field, $instance,
     case 'interval_raw':
       foreach ($items as $delta => $item) {
         $element[$delta] = array(
-          '#markup' => check_plain(interval_format_interval($item))
+          '#markup' => check_plain(interval_format_interval($item)),
         );
       }
       break;
@@ -182,7 +181,7 @@ function interval_field_instance_settings_form($field, $instance) {
       '#title' => t('Allowed periods'),
       '#options' => $options,
       '#description' => t('Select the periods you wish to be available in the dropdown. Selecting none will make all of them available.'),
-      '#default_value' => isset($settings['allowed_periods']) ? $settings['allowed_periods'] : array()
+      '#default_value' => isset($settings['allowed_periods']) ? $settings['allowed_periods'] : array(),
     );
   }
   return $form;
@@ -306,7 +305,7 @@ function theme_interval($variables) {
  * Process function to expand the interval element type.
  */
 function interval_element_process($element, &$form_state, $form) {
-  $value = !empty($element['#default_value'])?$element['#default_value']:array('interval' => NULL, 'period' => NULL);
+  $value = !empty($element['#default_value']) ? $element['#default_value'] : array('interval' => NULL, 'period' => NULL);
 
   $element['interval'] = array(
     '#type' => 'textfield',
@@ -315,7 +314,7 @@ function interval_element_process($element, &$form_state, $form) {
   );
 
   $intervals = interval_get_intervals();
-  $periods = !empty($element['#periods'])?$element['#periods']:array_keys($intervals);
+  $periods = !empty($element['#periods']) ? $element['#periods'] : array_keys($intervals);
   $period_options = array();
   foreach ($intervals as $key => $detail) {
     if (in_array($key, $periods) && isset($detail['plural'])) {
@@ -426,11 +425,11 @@ function interval_get_intervals() {
  * Applies the interval values to a given date
  *
  * @param object $date
- *   A DateTime object to which the interval needs to be applied
+ *   A DateTime object to which the interval needs to be applied.
  * @param array $item
  *   An array of values for the interval item consisting of:
  *   - interval: the interval (int)
- *   - period: the interval period
+ *   - period: the interval period.
  * @param bool $limit
  *   When calling the interval apply function with months or a month multiplier,
  *   keep the date in the last day of the month if this was exceeded.
@@ -478,7 +477,7 @@ function interval_apply_interval($date, $item, $limit = FALSE) {
  * @param array $item
  *   An array of values for the interval item consisting of:
  *   - interval: the interval (int)
- *   - period: the interval period
+ *   - period: the interval period.
  * @param array $interval
  *   An array of interval properties.
  *
@@ -506,7 +505,7 @@ function interval_php_interval($item, $interval = NULL) {
  * @param array $item
  *   An array of values for the interval item consisting of:
  *   - interval: the interval (int)
- *   - period: the interval period
+ *   - period: the interval period.
  *
  * @return string
  *   The formatted interval
@@ -518,7 +517,7 @@ function interval_format_interval($item) {
     $item['interval'], '1 @singular', '@count @plural',
     array(
       '@singular' => $interval['singular'],
-      '@plural' => $interval['plural']
+      '@plural' => $interval['plural'],
     )
   );
 }

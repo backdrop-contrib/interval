@@ -59,7 +59,7 @@ function interval_rules_apply_interval($interval, $period, $datestamp, $limit = 
   $date = new BackdropDateTime("@$datestamp");
   $item = array(
     'interval' => $interval,
-    'period' => $period
+    'period' => $period,
   );
   interval_apply_interval($date, $item, $limit);
   return array('date' => $date->format('U'));

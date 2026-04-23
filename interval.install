@@ -8,7 +8,6 @@
  *
  */
 
-
 /**
  * Implements hook_field_schema().
  *
@@ -23,7 +22,7 @@ function interval_field_schema($field) {
       'type'          => 'int',
       'size'          => 'medium',
       'not null'      => TRUE,
-      'default'       => 0
+      'default'       => 0,
     ),
     'period' => array(
       'description'   => 'The period machine name',
@@ -31,7 +30,7 @@ function interval_field_schema($field) {
       'size'          => 'normal',
       'length'        => 20,
       'not null'      => TRUE,
-      'default'       => 'day'
+      'default'       => 'day',
     ),
   );
   $indexes = array(
