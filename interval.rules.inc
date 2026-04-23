@@ -56,7 +56,7 @@ function interval_rules_action_info() {
  * Rules action callback: Apply an interval to a date.
  */
 function interval_rules_apply_interval($interval, $period, $datestamp, $limit = FALSE) {
-  $date = new DateObject("@$datestamp");
+  $date = new BackdropDateTime("@$datestamp");
   $item = array(
     'interval' => $interval,
     'period' => $period

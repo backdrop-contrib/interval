@@ -60,8 +60,8 @@ function interval_field_entity_property_info_alter(&$info, $entity_type, $field,
   $name = $field['field_name'];
   $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
 
-  $property['getter callback'] = 'entity_metadata_field_verbatim_get';
-  $property['setter callback'] = 'entity_metadata_field_verbatim_set';
+  $property['getter callback'] = 'entity_plus_metadata_field_verbatim_get';
+  $property['setter callback'] = 'entity_plus_metadata_field_verbatim_set';
   $property['property info'] = interval_entity_property_field_item_interval_info();
   unset($property['query callback']);
 }
@@ -133,10 +133,8 @@ function interval_field_formatter_view($entity_type, $entity, $field, $instance,
     case 'interval_default':
       foreach ($items as $delta => $item) {
         $element[$delta] = array(
-          '#type' => 'html_tag',
-          '#attributes' => array('class' => array('interval-value')),
-          '#tag' => 'div',
-          '#value' => interval_format_interval($item)
+          '#type' => 'markup',
+          '#markup' => '<div class="interval-value">' . interval_format_interval($item) . '</div>',
         );
       }
       break;
@@ -301,7 +299,7 @@ function theme_interval($variables) {
   }
   $attributes['class'][] = 'container-inline';
 
-  return '<div' . drupal_attributes($attributes) . '>' . drupal_render_children($element) . '</div>';
+  return '<div' . backdrop_attributes($attributes) . '>' . backdrop_render_children($element) . '</div>';
 }
 
 /**
@@ -407,7 +405,7 @@ function interval_interval_intervals() {
  * Util function to fetch defined intervals
  */
 function interval_get_intervals() {
-  $intervals = &drupal_static(__FUNCTION__);
+  $intervals = &backdrop_static(__FUNCTION__);
   if (!isset($intervals)) {
     // First prime of the static - try cache.
     $cached = cache_get('interval_intervals');
