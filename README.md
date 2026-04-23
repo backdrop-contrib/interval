@@ -1,5 +1,8 @@
 # Interval Field
 
+Provides a field type and widget for to input date intervals, also provides a rules action
+to apply an interval to dates (date field).
+
 ## Requirements
 
 - Field and Date module, both ship with core
