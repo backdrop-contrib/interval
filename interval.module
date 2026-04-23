@@ -206,7 +206,10 @@ function interval_field_widget_info() {
  */
 function interval_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   // Convenience variables.
-  $value = isset($items[$delta]) ? $items[$delta] : array('interval' => NULL, 'period' => NULL);
+  $value = isset($items[$delta]) ? $items[$delta] : array(
+    'interval' => NULL,
+    'period' => NULL,
+  );
   $field_name = $instance['field_name'];
 
   // We need to check our form_state values for ajax completion.
@@ -305,7 +308,10 @@ function theme_interval($variables) {
  * Process function to expand the interval element type.
  */
 function interval_element_process($element, &$form_state, $form) {
-  $value = !empty($element['#default_value']) ? $element['#default_value'] : array('interval' => NULL, 'period' => NULL);
+  $value = !empty($element['#default_value']) ? $element['#default_value'] : array(
+    'interval' => NULL,
+    'period' => NULL,
+  );
 
   $element['interval'] = array(
     '#type' => 'textfield',
@@ -336,7 +342,7 @@ function interval_element_process($element, &$form_state, $form) {
  ***************************************************************/
 
 /**
- * Implements hook_interval_intervals
+ * Implements hook_interval_intervals().
  */
 function interval_interval_intervals() {
   return array(
@@ -439,7 +445,7 @@ function interval_get_intervals() {
  * @return bool
  *   TRUE/FALSE
  */
-function interval_apply_interval($date, $item, $limit = FALSE) {
+function interval_apply_interval($date, array $item, $limit = FALSE) {
   if (is_object($date)) {
     $old_date = clone $date;
     $intervals = interval_get_intervals();
@@ -478,7 +484,7 @@ function interval_apply_interval($date, $item, $limit = FALSE) {
  *   An array of values for the interval item consisting of:
  *   - interval: the interval (int)
  *   - period: the interval period.
- * @param array $interval
+ * @param array|null $interval
  *   An array of interval properties.
  *
  * @return string
@@ -486,7 +492,7 @@ function interval_apply_interval($date, $item, $limit = FALSE) {
  *
  * @see interval_get_intervals
  */
-function interval_php_interval($item, $interval = NULL) {
+function interval_php_interval(array $item, $interval = NULL) {
   if (!isset($interval)) {
     $intervals = interval_get_intervals();
     $interval = $intervals[$item['period']];
@@ -510,7 +516,7 @@ function interval_php_interval($item, $interval = NULL) {
  * @return string
  *   The formatted interval
  */
-function interval_format_interval($item) {
+function interval_format_interval(array $item) {
   $intervals = interval_get_intervals();
   $interval = $intervals[$item['period']];
   return format_plural(
