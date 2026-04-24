@@ -1,5 +1,5 @@
-[IntervalUnitTestCase]
-name = Interval unit test
-description = Test interval works properly.
+[IntervalWebTestCase]
+name = Interval basic web test
+description = Test that Interval works properly.
 group = Interval
 file = interval.test
