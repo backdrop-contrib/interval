@@ -15,7 +15,7 @@ function interval_field_info() {
       'description' => t('Provides an interval field allowing you to enter a number and select a period.'),
       'default_widget' => 'interval_default',
       'default_formatter' => 'interval_default',
-      // Add entity property metadata for the entity api module.
+      // Add entity property metadata for the entity_plus module.
       'property_type' => 'field_item_interval',
       'property_callbacks' => array('interval_field_entity_property_info_alter'),
     ),
@@ -24,7 +24,6 @@ function interval_field_info() {
 
 /**
  * Defines the data structure used for interval field items.
- * @todo probably dead code.
  */
 function interval_entity_property_field_item_interval_info() {
   return array(
@@ -45,7 +44,6 @@ function interval_entity_property_field_item_interval_info() {
  * Callback to alter the property info of interval fields.
  *
  * @see interval_field_info()
- * @todo probably dead code, too.
  */
 function interval_field_entity_property_info_alter(&$info, $entity_type, $field, $instance, $field_type) {
   $name = $field['field_name'];
@@ -59,8 +57,6 @@ function interval_field_entity_property_info_alter(&$info, $entity_type, $field,
 
 /**
  * Implements hook_field_validate().
- *
- * @see interval_field_widget_error()
  */
 function interval_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
   foreach ($items as $delta => $item) {
