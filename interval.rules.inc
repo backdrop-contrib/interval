@@ -2,10 +2,6 @@
 /**
  * @file
  * Provides rules integration for interval module
- * @copyright Copyright(c) 2011 Lee Rowlands
- * @license GPL v2+ http://www.fsf.org/licensing/licenses/gpl.html
- * @author Lee Rowlands contact at rowlandsgroup dot com
- *
  */
 
 /**

@@ -2,10 +2,6 @@
 /**
  * @file
  * Documents hooks defined by the module
- * @copyright Copyright(c) 2011 Rowlands Group
- * @license GPL v2+ http://www.fsf.org/licensing/licenses/gpl.html
- * @author Lee Rowlands leerowlands at rowlandsgroup dot com
- *
  */
 
 /**

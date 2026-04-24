@@ -2,20 +2,10 @@
 /**
  * @file
  * Defines an interval field
- * @copyright Copyright(c) 2011 Rowlands Group
- * @license GPL v2+ http://www.fsf.org/licensing/licenses/gpl.html
- * @author Lee Rowlands leerowlands at rowlandsgroup dot com
- *
  */
-
-/***************************************************************
- * Field Type API hooks
- ***************************************************************/
 
 /**
  * Implements hook_field_info().
- *
- * Provides the description of the field.
  */
 function interval_field_info() {
   return array(
@@ -34,6 +24,7 @@ function interval_field_info() {
 
 /**
  * Defines the data structure used for interval field items.
+ * @todo probably dead code.
  */
 function interval_entity_property_field_item_interval_info() {
   return array(
@@ -54,6 +45,7 @@ function interval_entity_property_field_item_interval_info() {
  * Callback to alter the property info of interval fields.
  *
  * @see interval_field_info()
+ * @todo probably dead code, too.
  */
 function interval_field_entity_property_info_alter(&$info, $entity_type, $field, $instance, $field_type) {
   $name = $field['field_name'];
@@ -92,12 +84,6 @@ function interval_field_is_empty($item, $field) {
 
 /**
  * Implements hook_field_formatter_info().
- *
- * We need to tell Drupal that we have two different types of formatters
- * for this field. One will change the text color, and the other will
- * change the background color.
- *
- * @see interval_field_formatter_view()
  */
 function interval_field_formatter_info() {
   return array(
@@ -121,8 +107,6 @@ function interval_field_formatter_info() {
 
 /**
  * Implements hook_field_formatter_view().
- *
- * @see interval_field_formatter_info()
  */
 function interval_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
@@ -162,8 +146,6 @@ function interval_field_formatter_view($entity_type, $entity, $field, $instance,
 
 /**
  * Implements hook_field_instance_settings_form().
- *
- * Allow the user to choose from available periods
  */
 function interval_field_instance_settings_form($field, $instance) {
   $form = array();
@@ -189,8 +171,6 @@ function interval_field_instance_settings_form($field, $instance) {
 
 /**
  * Implements hook_field_widget_info().
- *
- * @see interval_field_widget_form()
  */
 function interval_field_widget_info() {
   return array(
@@ -241,9 +221,6 @@ function interval_field_widget_form(&$form, &$form_state, $field, $instance, $la
 
 /**
  * Implements hook_field_widget_error().
- *
- * @see interval_field_validate()
- * @see form_error()
  */
 function interval_field_widget_error($element, $error, $form, &$form_state) {
   switch ($error['error']) {
@@ -252,10 +229,6 @@ function interval_field_widget_error($element, $error, $form, &$form_state) {
       break;
   }
 }
-
-/***************************************************************
- * Form element hooks
- ***************************************************************/
 
 /**
  * Implements hook_element_info().
@@ -336,10 +309,6 @@ function interval_element_process($element, &$form_state, $form) {
 
   return $element;
 }
-
-/***************************************************************
- * Non core hooks
- ***************************************************************/
 
 /**
  * Implements hook_interval_intervals().
