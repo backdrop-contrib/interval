@@ -1,11 +1,22 @@
 # Interval Field
 
-Provides a field type and widget for to input date intervals, also provides a rules action
-to apply an interval to dates (date field).
+Provides a field type, field widget and simple formatter to input intervals
+related to dates.
+
+Also provides a Rules action to apply an interval to dates (date field).
+
+Those intervals look like:
+- 2 months
+- 3 days
+- 4 years
+
+The field comes pre-bundled with second, minute, hour, day, week, fortnight,
+month, quarter and year interval periods. The available periods can be easily
+extended by other modules (see interval.api.php for info).
 
 ## Requirements
 
-- Field and Date module, both ship with core
+- Date module (core)
 
 ## Installation
 

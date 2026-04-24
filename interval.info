@@ -4,7 +4,6 @@ package = Date/Time
 type = module
 backdrop = 1.x
 
-dependencies[] = field
 dependencies[] = date
 
 maintainers[indigoxela] = indigoxela
